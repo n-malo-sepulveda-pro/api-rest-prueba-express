@@ -3,10 +3,10 @@ Favor ejecutar
 ```
 npm install
 ```
-Después, crear el archivo .env, el cual debe contener estas variables de entorno:
+Después, crear el archivo .env, el cual debe contener estas variables de entorno:  
 
 
-PUERTO
+PUERTO  
 
 
-LIMITE_FILAS
+LIMITE_FILAS  

@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const Servidor=require("./models/servidor");
 
 const main=async()=>{

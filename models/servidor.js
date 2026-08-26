@@ -1,6 +1,11 @@
-require("dotenv").config();
+process.loadEnvFile();
+require("dotenv-expand").expand({ ignoreProcessEnv: false });
 const express=require("express");
 const cors=require("cors");
+
+const   {
+            conectarMongo
+        }=require("../db/bdConfigurador");
 
 class Servidor
 {
@@ -11,7 +16,12 @@ class Servidor
     {
         this.puerto=process.env.PUERTO;
         this.rutaApiUsuarios="/api/usuarios";
+        this.rutaApiRoles="/api/roles";
+        this.rutaApiCategorias="/api/categorias";
+        this.rutaApiPlataformas="/api/plataformas";
         this.app=express();
+        //Enlace a BD Mongo:
+        this.conectarBase();
         //Middleware:
         this.generarMiddleware();
         //Fin middleware
@@ -21,6 +31,11 @@ class Servidor
     //Get-Set:
 
     //Métodos:
+    async conectarBase()
+    {
+        await conectarMongo();
+    }
+
     generarMiddleware()
     {
         //Activar CORS:
@@ -33,7 +48,10 @@ class Servidor
 
     establecerRutas()
     {
-        this.app.use(this.rutaApiUsuarios,require("../routes/usuario"));        
+        this.app.use(this.rutaApiUsuarios,require("../routes/usuario"));
+        this.app.use(this.rutaApiCategorias,require("../routes/categoria"));
+        this.app.use(this.rutaApiPlataformas,require("../routes/plataforma_origen"));
+        this.app.use(this.rutaApiRoles,require("../routes/rol"));
     }  
 
     oirPuerto()

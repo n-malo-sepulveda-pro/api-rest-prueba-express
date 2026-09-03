@@ -65,8 +65,11 @@ const EsquemaUsuario=esquema({
 });
 
 EsquemaUsuario.methods.toJSON=function(){
-    const { __v,contrasenna,...objUsuario}=this.toObject();
-    return objUsuario;
+    const { __v,_id,contrasenna,...objUsuario}=this.toObject();
+    
+    return {
+        uid: _id,
+        ...objUsuario};
 };
 
 module.exports=modelo('Usuario',EsquemaUsuario);

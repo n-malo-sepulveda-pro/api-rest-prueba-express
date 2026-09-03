@@ -57,15 +57,48 @@ const desencriptarTexto=(textoEncriptado="")=>{
 };
 
 const encriptarTextoSimple=(texto)=>{
-    const salt=objCriptologo.randomBytes(16).toString('hex');
-    const hash=objCriptologo.scryptSync(texto, salt, 64).toString('hex');
-    return `${salt}:${hash}`;
+
+    // 1. Generamos un salt aleatorio (se recomiendan 16 bytes para scrypt)
+    const objSalt = objCriptologo.randomBytes(parseInt(process.env.LONGITUD_SALT, 10));
+    // 2. Generar el hash irreversible usando scryptSync
+    // Parámetros: (textoPlano, salt, longitudDelHashDeSalida, opcionesDeSeguridad)
+    const objHash=objCriptologo.scryptSync(texto, objSalt, parseInt(process.env.LONGITUD_HASH_SALIDA,10), {
+        N: 16384, // Costo de CPU/Memoria (estándar recomendado)
+        r: 8,     // Tamaño de bloque
+        p: 1      // Paralelización
+    });
+    const valorSalida = `${objSalt.toString('hex')}:${objHash.toString('hex')}`;
+    return valorSalida;
 };
 
-const verificarValorEncriptado=(texto,hashAlmacenado)=>{
-    const [salt, hashOriginal] = hashAlmacenado.split(':');
-    const hashNuevo=objCriptologo.scryptSync(passwordIngresada, salt, 64).toString('hex');
-    return objCriptologo.timingSafeEqual(Buffer.from(hashOriginal, 'hex'), Buffer.from(hashNuevo, 'hex'));
+const verificarValorEncriptado=(texto,valorEncriptado)=>{
+    try 
+    {
+        const [saltHex, hashHex] = valorEncriptado.split(':');//Separar el salt y el hash que guardamos previamente
+        if (!saltHex || !hashHex) 
+        {
+            return false;
+        }
+        // 2. Convertir nuevamente el salt y el hash original a búfers
+        const objSalt = Buffer.from(saltHex, 'hex');
+        const buferHash = Buffer.from(hashHex, 'hex');
+
+        // 3. Aplicar el mismo algoritmo scrypt al texto plano usando el mismo salt
+        const longitudHashSalida = buferHash.length; // Asegura que tengan el mismo tamaño
+        const buferNuevoHash = objCriptologo.scryptSync(texto, objSalt, longitudHashSalida, {
+            N: 16384,
+            r: 8,
+            p: 1
+        });
+
+        const resultadoComparacion=objCriptologo.timingSafeEqual(buferNuevoHash,buferHash);
+        return resultadoComparacion;
+    } 
+    catch (error) 
+    {
+        console.log("error en proceso comparativo\n"+error);
+        return false;
+    }
 };
 
 module.exports= {

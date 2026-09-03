@@ -14,8 +14,8 @@ const obtenerUsuarios=async(req=request,res=response)=>{
     const [cantidadRegistros,listaDeUsuarios]=await Promise.all([
         Usuario.countDocuments(filtrado),
         Usuario.find(filtrado)
-            .skip(parseInt(desde,10))
-            .limit(parseInt(limite,10))
+            /*.skip(parseInt(desde,10))
+            .limit(parseInt(limite,10))*/
     ]);
     res.json({
         "status"    :   "listo",
@@ -83,7 +83,7 @@ const mostrarMensajeDefectoPost=(req, res=response)=> {
 const modificarUsuario=async(req,res=response)=>{
 
     const {idUsuario}=req.params;
-    const {_id,contrasenna,id_p_ori,correo,...ficha}=req.body,nombre_persona = `${nombres} ${apellido01}`;
+    const {uid,contrasenna,id_p_ori,correo,...ficha}=req.body,nombre_persona = `${nombres} ${apellido01}`;
     //Rutina de verificación de contraseña
     if(contrasenna)
     {
@@ -133,9 +133,15 @@ const mostrarMensajeDefectoPatch=(req, res=response)=>{
 //Rutinas DELETE:
 const quitarUsuario=async(req,res=response)=>{
     const {idUsuario}=req.params;
+    
     const usuarioProcesado=await Usuario.findByIdAndUpdate(idUsuario,{es_vigente:false});
+    //obtener usuario ejecutor del proceso.
+    
+    const usuarioProceso=req.usuarioProceso;
     const objetoSalida={
-        mensaje:"Usuario eliminado"
+        mensaje:"Usuario eliminado",
+        usuarioProcesado,
+        usuarioProceso
     };
     res.json(objetoSalida);
 };

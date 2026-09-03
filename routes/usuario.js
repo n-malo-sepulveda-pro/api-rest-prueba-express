@@ -1,5 +1,6 @@
 const { Router:enrutador }=require("express");
 const {check:validar}=require("express-validator");
+const LISTA_DE_ROLES_ADMIN=require("../constants/roles-admin");
 const   {
             listar,
             consultar,
@@ -13,7 +14,11 @@ const   {
             mostrarMensajeDefectoPatch,
             mostrarMensajeDefectoDelete,
         }=require("../controllers/controladorUsuario");
-const {validarCampos}=require("../middleware/validador-campos");
+const   {
+            validarCampos,
+            validarJWT,
+            validarAdministrador
+        }=require("../middleware");
 const   {
             validarIdUsuario,
             validarRol,
@@ -64,6 +69,8 @@ objEnrutador.patch('/:idUsuario'[
 objEnrutador.patch('{*any}',mostrarMensajeDefectoPatch);
 //Rutinas DELETE:
 objEnrutador.delete('/:idUsuario',[
+    validarJWT,
+    validarAdministrador(LISTA_DE_ROLES_ADMIN.ROL_ADMINISTRADOR,LISTA_DE_ROLES_ADMIN.ROL_SUPERUSUARIO),
     validar('idUsuario', 'No es un ID de Mongo válido').isMongoId(),
     validar('idUsuario').custom(validarIdUsuario),
     validarCampos

@@ -19,6 +19,7 @@ class Servidor
         this.rutaApiRoles="/api/roles";
         this.rutaApiCategorias="/api/categorias";
         this.rutaApiPlataformas="/api/plataformas";
+        this.rutaApiAcceso="/api/acceso";
         this.app=express();
         //Enlace a BD Mongo:
         this.conectarBase();
@@ -49,6 +50,7 @@ class Servidor
     establecerRutas()
     {
         this.app.use(this.rutaApiUsuarios,require("../routes/usuario"));
+        this.app.use(this.rutaApiAcceso,require("../routes/acceso"));
         this.app.use(this.rutaApiCategorias,require("../routes/categoria"));
         this.app.use(this.rutaApiPlataformas,require("../routes/plataforma_origen"));
         this.app.use(this.rutaApiRoles,require("../routes/rol"));

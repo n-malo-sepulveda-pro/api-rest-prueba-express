@@ -3,7 +3,8 @@ const {check:validar}=require("express-validator");
 
 const {validarCampos}=require("../middleware/validador-campos");
 const   {
-            acceder
+            acceder,
+            accederExterno
         }=require("../controllers/controladorAcceso");
 const   {
             consultarUsuario
@@ -18,5 +19,10 @@ objEnrutador.post('/acceder',[
     validar('contrasenna','Favor ingresar una contraseña de usuario').not().isEmpty(),
     validarCampos
 ],acceder);
+
+objEnrutador.post("/accederExterno",[
+    validar('valor_token','favor proporcionar un token').not().isEmpty(),
+    validarCampos
+],accederExterno);
 
 module.exports=objEnrutador;

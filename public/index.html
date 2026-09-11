@@ -3,9 +3,62 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sitio de prueba</title>
+        <title>Prueba de acceso con plataformas externas</title>
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <script>            
+            function handleCredentialResponse(response)
+            {
+                const valorToken=response.credential;
+                const url_proceso='http://localhost:8089/api/acceso/accederExterno?id_origen=1';
+                const cuerpo_proceso    =   {
+                                                valor_token: valorToken
+                                            };
+                fetch(url_proceso,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(cuerpo_proceso)
+                })
+                .then(r=>r.json())
+                .then((resp)=>{
+                    localStorage.setItem('correo_electronico',resp.correo_electronico);
+                })
+                .catch(()=>{
+                    console.warn;
+                });
+                
+            }
+        </script>
     </head>
     <body>
         <h1>Sitio de prueba</h1>
+        <hr>
+        <ul>
+            <li>
+                Google
+                <div id="g_id_onload" data-auto_prompt="false" data-callback="handleCredentialResponse" data-client_id="160590081276-2qh6h6q7sd1atdahdt7k5tho82hsglsi.apps.googleusercontent.com"></div>
+                <!-- g_id_signin places the button on a page and supports customization -->
+                <div class="g_id_signin" data-text="signup_with"></div>
+            </li>
+        </ul>
+        <button id="btn_salida_google" name="btn_salida_google">
+            Salir de Google
+        </button>
+        <script>
+            const tecla_google=document.getElementById("btn_salida_google");
+            const terminarSesionGoogle=async()=>{
+                console.log(google.accounts.id);
+                google.accounts.id.disableAutoSelect();
+                google.accounts.id.revoke(localStorage.getItem('correo_electronico'),esta_listo=>{
+                    localStorage.clear();
+                    location.reload();
+                });
+            };
+            if(tecla_google)
+            {
+                tecla_google.onclick=terminarSesionGoogle;
+            }
+        </script>
     </body>
 </html>

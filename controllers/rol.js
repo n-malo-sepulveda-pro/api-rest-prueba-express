@@ -1,6 +1,6 @@
 const{response,request}=require("express");
 require("dotenv-expand").expand({ parsed: process.env });
-const Rol=require("../models/rol");
+const {Rol}=require("../models");
 
 //Rutinas GET:
 const obtenerDatosRol=(req=request,res=response)=>{
@@ -15,12 +15,6 @@ const obtenerDatosRol=(req=request,res=response)=>{
         cantidadMaximaFilas
     };
     res.json(objetoSalida);
-};
-const mostrarMensajeDefectoGet=(req, res=response)=> {
-    const objetoSalida={
-        mensaje:"ruta no encontrada (GET) en controlador"
-    };
-    res.status(404).json(objetoSalida);
 };
 //Rutinas POST:
 const ingresarRol=async(req,res=response)=>{
@@ -38,12 +32,6 @@ const ingresarRol=async(req,res=response)=>{
     };
     res.status(201).json(objetoSalida);
 };
-const mostrarMensajeDefectoPost=(req, res=response)=> {
-    const objetoSalida={
-        mensaje:"ruta no encontrada (POST) en controlador"
-    };
-    res.status(404).json(objetoSalida);
-};
 //Rutinas PUT:
 const modificarRol=(req,res=response)=>{
 
@@ -54,12 +42,6 @@ const modificarRol=(req,res=response)=>{
     };
     res.json(objetoSalida);
 };
-const mostrarMensajeDefectoPut=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (PUT) en controlador"
-    };
-    res.status(404).json(objetoSalida);
-};
 //Rutinas PATCH:
 const ajustarRol=(req,res=response)=>{
     const idRol=req.params.idRolEntrada;
@@ -68,12 +50,6 @@ const ajustarRol=(req,res=response)=>{
         mensaje:"petición a la API de tipo PATCH desde el controlador"
     };
     res.status(400).json(objetoSalida);
-};
-const mostrarMensajeDefectoPatch=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (PATCH) en controlador"
-    };
-    res.status(404).json(objetoSalida);
 };
 //Rutinas DELETE:
 const quitarRol=(req,res=response)=>{
@@ -84,21 +60,10 @@ const quitarRol=(req,res=response)=>{
     };
     res.json(objetoSalida);
 };
-const mostrarMensajeDefectoDelete=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (DELETE) en controlador"
-    };
-    res.status(404).json(objetoSalida);
-};
 module.exports  =   {
                         obtener:obtenerDatosRol,
                         crear:ingresarRol,
                         modificar:modificarRol,
                         ajustar:ajustarRol,
-                        quitar:quitarRol,
-                        mostrarMensajeDefectoGet,
-                        mostrarMensajeDefectoPost,
-                        mostrarMensajeDefectoPut,
-                        mostrarMensajeDefectoPatch,
-                        mostrarMensajeDefectoDelete
+                        quitar:quitarRol
                     };

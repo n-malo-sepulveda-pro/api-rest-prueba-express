@@ -5,10 +5,10 @@ const {validarCampos}=require("../middleware/validador-campos");
 const   {
             acceder,
             accederExterno
-        }=require("../controllers/controladorAcceso");
+        }=require("../controllers/acceso");
 const   {
             consultarUsuario
-        }=require("../helpers/bdValidador");
+        }=require("../helpers/db-validador");
 
 const objEnrutador=enrutador();
 

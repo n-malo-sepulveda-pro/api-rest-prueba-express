@@ -1,0 +1,5 @@
+{
+    "tablas_omitidas":[
+        "roles","base_cafe","productos_precios","monedas","paises","paises_monedas","productos_categorias","usuarios_perfiles_fotos","plataformas_origenes"
+    ]
+}

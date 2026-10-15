@@ -5,13 +5,15 @@ const   {
             crear,
             modificar,
             ajustar,
-            quitar,
+            quitar
+        }=require("../controllers/rol");
+const   {
             mostrarMensajeDefectoGet,
             mostrarMensajeDefectoPost,
             mostrarMensajeDefectoPut,
             mostrarMensajeDefectoPatch,
             mostrarMensajeDefectoDelete,
-        }=require("../controllers/controladorRol");
+        }=require("../controllers/defecto");
 const {validarCampos}=require("../middleware/validador-campos");
 
 const objEnrutador=enrutador();

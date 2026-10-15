@@ -5,13 +5,15 @@ const   {
             crear,
             modificar,
             ajustar,
-            quitar,
+            quitar
+        }=require("../controllers/plataforma-origen");
+const   {
             mostrarMensajeDefectoGet,
             mostrarMensajeDefectoPost,
             mostrarMensajeDefectoPut,
             mostrarMensajeDefectoPatch,
             mostrarMensajeDefectoDelete,
-        }=require("../controllers/controladorPlataformaOrigen");
+        }=require("../controllers/defecto");
 const {validarCampos}=require("../middleware/validador-campos");
 
 const objEnrutador=enrutador();

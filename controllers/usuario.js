@@ -1,24 +1,21 @@
 const{response,request}=require("express");
 const objMongoose=require('mongoose');
 require("dotenv-expand").expand({ ignoreProcessEnv: false });
-const {encriptarSimple}=require("../helpers/cripto");
-const Usuario=require("../models/usuario");
+const {encriptarSimple}=require("../helpers/encriptador");
+const {Usuario}=require("../models");
 
 //Rutinas GET:
 const obtenerUsuarios=async(req=request,res=response)=>{
-    const{limite=5,desde=0}=req.query;
-    const filtrado={
-        es_vigente:true
-    };
+    const{limite=5,desde=0}=req.query;    
 
     const [cantidadRegistros,listaDeUsuarios]=await Promise.all([
-        Usuario.countDocuments(filtrado),
-        Usuario.find(filtrado)
-            /*.skip(parseInt(desde,10))
-            .limit(parseInt(limite,10))*/
+        Usuario.countDocuments({es_vigente:true}),
+        Usuario.find({es_vigente:true})
+            .skip(parseInt(desde,10))
+            .limit(parseInt(limite,10))
     ]);
     res.json({
-        "status"    :   "listo",
+        "status"    :   process.env.TODO_BIEN,
         "salida"    :   {
                             "cantidad"  :   cantidadRegistros,
                             "detalle"   :   listaDeUsuarios
@@ -37,12 +34,6 @@ const obtenerDatosUsuario=(req=request,res=response)=>{
         cantidadMaximaFilas
     };
     res.json(objetoSalida);
-};
-const mostrarMensajeDefectoGet=(req, res=response)=> {
-    const objetoSalida={
-        mensaje:"ruta no encontrada (GET) en controlador"
-    };
-    res.status(404).json(objetoSalida);
 };
 //Rutinas POST:
 const ingresarUsuario=async(req,res=response)=>{    
@@ -72,12 +63,6 @@ const ingresarUsuario=async(req,res=response)=>{
         apodo
     };
     res.status(201).json(objetoSalida);
-};
-const mostrarMensajeDefectoPost=(req, res=response)=> {
-    const objetoSalida={
-        mensaje:"ruta no encontrada (POST) en controlador"
-    };
-    res.status(404).json(objetoSalida);
 };
 //Rutinas PUT:
 const modificarUsuario=async(req,res=response)=>{
@@ -109,12 +94,6 @@ const modificarUsuario=async(req,res=response)=>{
     };
     res.json(objetoSalida);
 };
-const mostrarMensajeDefectoPut=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (PUT) en controlador"
-    };
-    res.status(404).json(objetoSalida);
-};
 //Rutinas PATCH:
 const ajustarUsuario=async(req,res=response)=>{
     const idUsuario=req.params.idUsuario;
@@ -123,12 +102,6 @@ const ajustarUsuario=async(req,res=response)=>{
         mensaje:"petición a la API de tipo PATCH desde el controlador"
     };
     res.status(400).json(objetoSalida);
-};
-const mostrarMensajeDefectoPatch=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (PATCH) en controlador"
-    };
-    res.status(404).json(objetoSalida);
 };
 //Rutinas DELETE:
 const quitarUsuario=async(req,res=response)=>{
@@ -145,12 +118,6 @@ const quitarUsuario=async(req,res=response)=>{
     };
     res.json(objetoSalida);
 };
-const mostrarMensajeDefectoDelete=(req, res=response)=>{
-    const objetoSalida={
-        mensaje:"ruta no encontrada (DELETE) en controlador"
-    };
-    res.status(404).json(objetoSalida);
-};
 
 module.exports  =   {
                         listar:obtenerUsuarios,
@@ -158,10 +125,5 @@ module.exports  =   {
                         crear:ingresarUsuario,
                         modificar:modificarUsuario,
                         ajustar:ajustarUsuario,
-                        quitar:quitarUsuario,
-                        mostrarMensajeDefectoGet,
-                        mostrarMensajeDefectoPost,
-                        mostrarMensajeDefectoPut,
-                        mostrarMensajeDefectoPatch,
-                        mostrarMensajeDefectoDelete
+                        quitar:quitarUsuario
                     };

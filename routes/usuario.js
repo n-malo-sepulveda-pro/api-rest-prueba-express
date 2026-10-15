@@ -7,13 +7,15 @@ const   {
             crear,
             modificar,
             ajustar,
-            quitar,
+            quitar
+        }=require("../controllers/usuario");
+const   {
             mostrarMensajeDefectoGet,
             mostrarMensajeDefectoPost,
             mostrarMensajeDefectoPut,
             mostrarMensajeDefectoPatch,
-            mostrarMensajeDefectoDelete,
-        }=require("../controllers/controladorUsuario");
+            mostrarMensajeDefectoDelete
+        }=require("../controllers/defecto");
 const   {
             validarCampos,
             validarJWT,
@@ -24,7 +26,7 @@ const   {
             validarRol,
             validarApodo,
             validarPlataforma
-        }=require("../helpers/bdValidador");
+        }=require("../helpers/db-validador");
 const Rol=require("../models/rol");
 
 const objEnrutador=enrutador();

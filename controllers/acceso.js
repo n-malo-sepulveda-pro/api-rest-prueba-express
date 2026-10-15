@@ -1,12 +1,10 @@
 const{response,request}=require("express");
 const objMongoose=require('mongoose');
 require("dotenv-expand").expand({ ignoreProcessEnv: false });
-const Usuario=require("../models/usuario");
-const PlataformaOrigen=require("../models/plataforma_origen");
-const UsuarioPerfilFoto=require("../models/usuario_perfil_foto");
-const {comprobarCredenciales,consultarUsuarioApodo}=require("../helpers/bdValidador");
-const {generarToken}=require("../helpers/rutinas-jwt");
-const {verificarTokenGoogle}=require("../helpers/externo-helper");
+const {Usuario,PlataformaOrigen,UsuarioPerfilFoto,Pais}=require("../models");
+const {comprobarCredenciales,consultarUsuarioApodo}=require("../helpers/db-validador");
+const {generarToken}=require("../helpers/jwt");
+const {verificarTokenGoogle}=require("../helpers/servicios-externos");
 const LISTA_DE_ORIGENES_EXTERNOS=require("../constants/origenes");
 
 const accederSistema=async(req=request,res=response)=>{
